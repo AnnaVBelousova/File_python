@@ -208,7 +208,7 @@ def write_to_csv(file_link):
         print(f"Данные успешно записаны в файл {file_link}")
 
 
-write_to_csv("C:\\Geekbrains\\csv")
+write_to_csv("C:\\Geekbrains\\File_python\\csv")
 '''
 # Доступ к файлам через директорию:
 
