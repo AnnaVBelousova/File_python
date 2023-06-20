@@ -130,17 +130,17 @@ import csv
 import os
 import re
 
-# lst = ["info_1.txt", "info_2.txt", "info_3.txt"]
+lst = ["info_1.txt", "info_2.txt", "info_3.txt"]
 
-data_dir = "C:\Geekbrains"  
+#data_dir = "C:\Geekbrains"  
 
 
-def get_data(data_dir):
+def get_data(lst):
     data = []
 
-    for filename in os.listdir(data_dir):
+    for filename in lst:
         if filename.endswith(".txt"):  
-            with open(os.path.join(data_dir, filename), "r") as file:
+            with open(filename, "r") as file:
                 data.append(file.read())
                 # print(data)
 
@@ -195,11 +195,11 @@ def get_data(data_dir):
     return main_data, manufacturer_list, os_name_list, product_code_list, system_type_list
 
 
-print(get_data(data_dir))
+print(get_data(lst))
 
 
 def write_to_csv(file_link):
-    data = get_data(data_dir)  
+    data = get_data(lst)  
 
     with open(file_link, mode='w', newline='') as file:
         writer = csv.writer(file)
@@ -209,3 +209,91 @@ def write_to_csv(file_link):
 
 
 write_to_csv("C:\\Geekbrains\\csv")
+'''
+# Доступ к файлам через директорию:
+
+import csv
+import os
+import re
+
+# lst = ["info_1.txt", "info_2.txt", "info_3.txt"]
+
+data_dir = "C:\Geekbrains"  # замените на путь к вашей директории с данными
+
+
+def get_data(data_dir):
+    data = []
+
+    for filename in os.listdir(data_dir):
+        if filename.endswith(".txt"):  # предполагаем, что данные хранятся в текстовых файлах
+            with open(os.path.join(data_dir, filename), "r") as file:
+                data.append(file.read())
+                # print(data)
+
+    manufacturer_list = []
+    os_name_list = []
+    product_code_list = []
+    system_type_list = []
+
+    for item in data:
+        # Извлекаем значения параметров с помощью регулярных выражений
+        manufacturer = re.search(r'Изготовитель системы:\s*(.*)', item)
+        if manufacturer:
+            manufacturer_list.append(manufacturer.group(1))
+
+        os_name = re.search(r'Название ОС:\s*(.*)', item)
+        if os_name:
+            os_name_list.append(os_name.group(1))
+
+        product_code = re.search(r'Код продукта:\s*(.*)', item)
+        if product_code:
+            product_code_list.append(product_code.group(1))
+
+        system_type = re.search(r'Тип системы:\s*(.*)', item)
+        if system_type:
+            system_type_list.append(system_type.group(1))
+
+    print(manufacturer_list)
+    print(os_name_list)
+    print(product_code_list)
+    print(system_type_list)
+
+    for item in data:
+        main_data = []  # Извлекаем значения параметров с помощью регулярных выражений
+        manufacturer = re.search(r'Изготовитель системы:', item)
+        if manufacturer:
+            main_data.append(manufacturer.group(0))
+
+        os_name = re.search(r'Название ОС:', item)
+        if os_name:
+            main_data.append(os_name.group(0))
+
+        product_code = re.search(r'Код продукта:', item)
+        if product_code:
+            main_data.append(product_code.group(0))
+
+        system_type = re.search(r'Тип системы:', item)
+        if system_type:
+            main_data.append(system_type.group(0))
+            # return main_data
+    print(main_data)
+
+    return main_data, manufacturer_list, os_name_list, product_code_list, system_type_list
+
+
+print(get_data(data_dir))
+
+
+def write_to_csv(file_link):
+    data = get_data(
+        data_dir)  # предполагается, что функция get_data() уже написана и возвращает данные в виде списка списков
+
+    with open(file_link, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        for row in data:
+            writer.writerow(row)
+        print(f"Данные успешно записаны в файл {file_link}")
+
+
+write_to_csv("C:\\Geekbrains\\csv")
+'''
